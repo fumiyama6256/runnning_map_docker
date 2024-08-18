@@ -8,13 +8,14 @@ npm install typescript ts-node @types/node @types/express
 ### TypeScriptの設定
 ```bash
 cd frontend
-npm install typescript @types/react @types/react-native
+npm install typescript @types/react @types/react-dom
 ```
 ###  Docker Composeの起動
 #### Staging環境での実行
 ```bash
 docker-compose --env-file .env.staging up --build
 ```
+- frontendのReactアプリも起動する
 #### Production環境での実行
 ```bash
 docker-compose --env-file .env.production up --build

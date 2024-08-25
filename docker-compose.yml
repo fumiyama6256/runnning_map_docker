@@ -1,32 +1,37 @@
 version: '3.8'
 
 services:
-  backend:
-    build: ./backend
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     env_file:
-    - .env.staging
+      - .env.staging
     environment:
       - AWS_REGION=${AWS_REGION}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - NODE_ENV=${NODE_ENV:-staging} #デフォはstaging
     volumes:
-      - ./backend:/usr/src/app
+      - ./app:/usr/src/app
     depends_on:
-      - dynamodb
+      - db
     command: ["sh", "-c", "if [ \"$NODE_ENV\" = \"staging\" ]; then npm run build && node dist/scripts/create-tables.js && node dist/server.js; else npm run build && node dist/server.js; fi"]
 
-  dynamodb:
-    image: amazon/dynamodb-local
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
 
-  frontend:
-    build: ./frontend
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
     ports:
-      - "8081:8081"
-    volumes:
-      - ./frontend:/usr/src/app
-    command: ["npm", "start"]
+      - "80:80"
+    depends_on:
+      - app

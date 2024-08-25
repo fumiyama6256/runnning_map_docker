@@ -47,3 +47,6 @@ aws dynamodb list-tables --endpoint-url http://localhost:8000
 aws dynamodb scan --table-name Users --endpoint-url http://localhost:8000
 aws dynamodb scan --table-name TrainingSessions --endpoint-url http://localhost:8000
 ```
+#### その他(todo)
+- .envはgit管理しない
+  - 現状は1人の開発段階なのでOKとするが、開発が進み次第.gitignoreに追加して管理しないようにする
